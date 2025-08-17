@@ -53,9 +53,9 @@ bool SolverInit(Solver* solver, int argc, char** argv) {
 }
 
 void SolverFree(Solver* solver) {
-	WordArrayFree(solver->dict);
+	if (solver->dict) WordArrayFree(solver->dict);
 	Free(solver->input);
-	SizeArrayFree(solver->hints);
+	if (solver->hints) SizeArrayFree(solver->hints);
 }
 
 typedef struct Guess {
