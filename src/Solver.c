@@ -44,7 +44,24 @@ bool SolverInit(Solver* solver, int argc, char** argv) {
 		return false;
 	}
 
+	size_t inLen = 0;
+	for (size_t i = 0; i < CHAR_COUNT_TABLE_LEN; i++) {
+		inLen += solver->input->counts[i];
+	}
+
+	size_t outLen = 0;
+	for (size_t i = 0; i < solver->hints->size; i++) {
+		outLen += solver->hints->data[i];
+	}
+
+	if (inLen != outLen) {
+		LogMessage("Exiting program : Impossible to solve (input and output lengths don't match).\n");
+		SolverFree(solver);
+		return false;
+	}
+
 	if (!EraseImpossibleWords(solver)) {
+		LogMessage("Exiting program : Impossible to solve with current dictionary.\n");
 		SolverFree(solver);
 		return false;
 	}
@@ -98,4 +115,14 @@ static void TestAllCombinations(Guess currGuess, Solver* solver, size_t hintIdx)
 	}
 }
 
-void SolverPrintAllGuesses(Solver* solver) { TestAllCombinations((Guess){0}, solver, 0); }
+void SolverPrintAllGuesses(Solver* solver) {
+	solver->guessCount = 0;
+
+	TestAllCombinations((Guess){0}, solver, 0);
+
+	if (!solver->guessCount) {
+		printf("Unable to solve...\n");
+	} else {
+		printf("Found %zu guesses !\n", solver->guessCount);
+	}
+}
