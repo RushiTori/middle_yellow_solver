@@ -19,13 +19,13 @@ SizeArray* SplitHints(const char* str) {
 		size_t subLen = strspn(str, "0123456789");
 		size_t skipLen = strcspn(str + subLen, "012345789");
 
-		if (subLen > MAX_WORD_LEN) {
-			LogMessage("Exiting program : \"%.*s\" (HINT_TOO_LONG: max=%d, curr=%zu)\n", (int)subLen, str, MAX_WORD_LEN, subLen);
+		size_t hint = strtoull(str, NULL, 10);
+
+		if (hint > MAX_WORD_LEN) {
+			LogMessage("Exiting program : \"%.*s\" (HINT_TOO_LONG: max=%d, curr=%zu)\n", (int)subLen, str, MAX_WORD_LEN, hint);
 			SizeArrayFree(arr);
 			return NULL;
 		}
-
-		size_t hint = strtoull(str, NULL, 10);
 
 		if (!SizeArrayPush(arr, hint)) {
 			SizeArrayFree(arr);
