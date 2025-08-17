@@ -66,7 +66,7 @@ typedef struct Guess {
 static void TestAllCombinations(Guess currGuess, Solver* solver, size_t hintIdx) {
 	if (hintIdx >= solver->hints->size) {
 		if (CharCountTableEquals(&(currGuess.charTable), solver->input)) {
-			printf("Guess #%zu: ", solver->guessCount++);
+			printf("Guess #%zu: ", ++(solver->guessCount));
 			for (size_t i = 0; i < solver->hints->size; i++) {
 				const Word* word = solver->dict->data + currGuess.wordIndeces->data[i];
 				printf("%.*s ", (int)word->len, word->data);
