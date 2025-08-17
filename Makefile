@@ -1,9 +1,9 @@
-# Makefile by RushiTori - June 22th 2025
+# Makefile by RushiTori - August 17th 2025
 # ====== Everything Makefile internal related ======
 
 rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
 MAKEFLAGS+=--no-print-directory
-RM+=-r
+RM:=rm -rvf
 DEBUG:=0
 RELEASE:=0
 
@@ -13,6 +13,8 @@ NAME:=middle_yellow_solver
 
 ifdef OS
 	NAME:=$(NAME).exe
+else ifeq ($(shell uname), Linux)
+	NAME:=$(NAME).out
 endif
 
 CC:=gcc
@@ -106,11 +108,9 @@ else
 endif
 
 clean:
-	@echo Deleting $(OBJ_DIR) folder
 	@$(RM) $(OBJ_DIR)
 
 wipe: clean
-	@echo Deleting $(NAME)
 	@$(RM) $(NAME)
 
 rebuild: wipe build
