@@ -15,11 +15,11 @@ SizeArray* SplitHints(const char* str) {
 	SizeArray* arr = SizeArrayCreate(8);
 	if (!arr) return NULL;
 
-	str += strcspn(str, "012345789");
+	str += strcspn(str, "0123456789");
 
 	while (*str) {
 		size_t subLen = strspn(str, "0123456789");
-		size_t skipLen = strcspn(str + subLen, "012345789");
+		size_t skipLen = strcspn(str + subLen, "0123456789");
 
 		size_t hint = strtoull(str, NULL, 10);
 
